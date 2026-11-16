@@ -20,12 +20,9 @@ jobs:
 
       - name: Prepare source
         run: |
-          if [ -f pom.xml ]; then
-            echo "SRC=." >> $GITHUB_ENV
-          else
-            unzip -oq ./*.zip -d src_unzip
-            echo "SRC=src_unzip" >> $GITHUB_ENV
-          fi
+          unzip -oq ./*.zip -d src_unzip
+          SRC_PATH=$(find src_unzip -name pom.xml -printf "%h\n" | head -n 1)
+          echo "SRC=$SRC_PATH" >> $GITHUB_ENV
 
       - name: Build jar file
         working-directory: ${{ env.SRC }}
